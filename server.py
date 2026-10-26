@@ -313,3 +313,11 @@ def update_ticket_status(ticket_id: str, req: StatusUpdateRequest):
     conn.close()
 
     return {"id": ticket_id, "status": req.status, "updated_at": now_str}
+
+# 8. Serve Frontend Static Build in Production (if built)
+from fastapi.staticfiles import StaticFiles
+
+frontend_dist = Path(__file__).resolve().parent / "frontend" / "dist"
+if frontend_dist.exists():
+    app.mount("/", StaticFiles(directory=str(frontend_dist), html=True), name="frontend")
+
